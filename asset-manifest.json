@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/MatchingGameReact/static/css/main.87e8b3da.css",
+    "main.js": "/MatchingGameReact/static/js/main.d13c73b5.js",
+    "static/media/mixkit-player-losing-or-failing-2042.wav": "/MatchingGameReact/static/media/mixkit-player-losing-or-failing-2042.183e2b8a775ec673ac2a.wav",
+    "static/media/mixkit-instant-win-2021.wav": "/MatchingGameReact/static/media/mixkit-instant-win-2021.c38ea1e0d411dd3ab8f1.wav",
+    "index.html": "/MatchingGameReact/index.html",
+    "main.87e8b3da.css.map": "/MatchingGameReact/static/css/main.87e8b3da.css.map",
+    "main.d13c73b5.js.map": "/MatchingGameReact/static/js/main.d13c73b5.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.87e8b3da.css",
+    "static/js/main.d13c73b5.js"
+  ]
+}
