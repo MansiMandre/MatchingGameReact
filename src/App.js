@@ -174,13 +174,18 @@ useEffect(() => {
   value={playerName}
   onChange={(e) => setPlayerName(e.target.value)}
 />
+<button
+  className={`${
+    playerName
+      ? "bg-pink-500 hover:bg-pink-600 cursor-pointer"
+      : "bg-gray-400 cursor-not-allowed"
+  } text-white px-6 py-2 rounded-md font-semibold shadow-lg mb-4 transition`}
+  onClick={startGame}
+  disabled={!playerName}
+>
+  🔄 Start / Restart Game
+</button>
 
-      <button
-        className="bg-pink-500 hover:bg-pink-600 text-white px-6 py-2 rounded-md font-semibold shadow-lg mb-4 transition"
-        onClick={startGame}
-      >
-        🔄 Start / Restart Game
-      </button>
 
       <div className="flex space-x-6 text-lg mb-6">
         <p>Moves: {moves}</p>
