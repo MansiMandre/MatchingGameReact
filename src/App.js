@@ -2,6 +2,9 @@ import React, { useState, useEffect, useRef } from "react";
 import Confetti from "react-confetti";
 import correctSoundFile from "./Sounds/mixkit-instant-win-2021.wav";
 import wrongSoundFile from "./Sounds/mixkit-player-losing-or-failing-2042.wav";
+import startSoundFile from "./Sounds/mixkit-game-level-music-689.wav"
+import winSoundFile from "./Sounds/mixkit-game-level-completed-2059.wav"
+import timeUpSoundFile from "./Sounds/mixkit-ticking-timer-1056.wav"
 import "./index.css";
 
 function shuffleArray(array) {
@@ -28,6 +31,26 @@ const categories = {
     { name: "Watermelon", symbol: "🍉" },
     { name: "Strawberry", symbol: "🍓" },
     { name: "Cherry", symbol: "🍒" },
+  ],
+  Vegetables: [
+    { name: "Carrot", symbol: "🥕" },
+    { name: "Corn", symbol: "🌽" },
+    { name: "Tomato", symbol: "🍅" },
+    { name: "Cucumber", symbol: "🥒" },
+    { name: "Potato", symbol: "🥔" },
+    { name: "Broccoli", symbol: "🥦" },
+    { name: "Pepper", symbol: "🌶️" },
+    { name: "Garlic", symbol: "🧄" },
+  ],
+  Smileys: [
+    { name: "Smile", symbol: "😊" },
+    { name: "Laugh", symbol: "😂" },
+    { name: "Cool", symbol: "😎" },
+    { name: "Wink", symbol: "😉" },
+    { name: "Heart Eyes", symbol: "😍" },
+    { name: "Angry", symbol: "😠" },
+    { name: "Crying", symbol: "😢" },
+    { name: "Surprised", symbol: "😮" },
   ],
 };
 
@@ -56,8 +79,12 @@ useEffect(() => {
   const timerRef = useRef(null);
   const correctSound = useRef(new Audio(correctSoundFile));
   const wrongSound = useRef(new Audio(wrongSoundFile));
+  const startSound = useRef(new Audio(startSoundFile));
+  const winSound = useRef(new Audio(winSoundFile));
+const timeUpSound = useRef(new Audio(timeUpSoundFile));  // 🔥 NEW
 
   const startGame = () => {
+     startSound.current.play();
     setLoading(true);
     setMoves(0);
     setTimer(0);
@@ -77,15 +104,24 @@ useEffect(() => {
     setLoading(false);
   };
 
-  useEffect(() => {
-    if (gameStarted) {
-      timerRef.current = setInterval(() => {
-        setTimer((prev) => prev + 1);
-      }, 1000);
-    }
+ useEffect(() => {
+  if (gameStarted) {
+    timerRef.current = setInterval(() => {
+      setTimer((prev) => {
+        if (prev + 1 >= 25) {
+          clearInterval(timerRef.current);
+          timeUpSound.current.play();   // 🔥 Play time-up sound
+          setShowPopup(true);
+          return 25;  // Stop at 25 sec
+        }
+        return prev + 1;
+      });
+    }, 1000);
+  }
+  return () => clearInterval(timerRef.current);
+}, [gameStarted]);
 
-    return () => clearInterval(timerRef.current);
-  }, [gameStarted]);
+
 
   const handleCardClick = (clickedCard) => {
     if (
@@ -139,6 +175,7 @@ useEffect(() => {
   useEffect(() => {
     if (allMatched) {
       clearInterval(timerRef.current);
+      winSound.current.play(); 
       setShowPopup(true);
     }
   }, [allMatched]);
@@ -214,7 +251,13 @@ useEffect(() => {
         </div>
       )}
 
-      {allMatched && <Confetti />}
+      {allMatched && <Confetti
+  gravity={0.8}           // 🔥 Increases falling speed (default is ~0.1–0.3)
+  numberOfPieces={500}    // More confetti pieces
+  recycle={false}         // Stop after one burst (optional)
+  width={window.innerWidth}
+  height={window.innerHeight}
+/>}
 
       {showPopup && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
